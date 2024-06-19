@@ -1,0 +1,135 @@
+create database board;
+use board;
+
+create table board (
+		b_name char(30) not null,
+        primary key (b_name)        
+);
+
+create table city (
+		c_name char(30) not null,
+        c_postal_code int not null,
+        board_name char(30) not null,
+        primary key (c_name)
+);
+
+create table institution(
+		i_name char(30) not null,
+        i_type char(30) not null,
+        no_std int,
+        no_tch int,
+        ph_num char(14),
+        i_address char(100) not null,
+        primary key (i_name)
+);
+
+
+create table subject_(
+		sbj_id int not null auto_increment,
+        subject_name char(150) not null,
+        primary key(sbj_id)
+);
+
+create table course(
+		course_id int not null auto_increment,
+        course_name char(30) not null,
+        major1 char(30) not null,
+        major2 char(30) default '',
+        major3 char(30) default '',
+        major4 char(30) default '',
+        major5 char(30) default '',
+        primary key(course_id)
+);
+
+create table student(
+		std_id int not null auto_increment,
+        std_name char(100) not null,
+        std_gender char(1) not null,
+        std_dob date not null,
+        std_addr char(100) not null,
+        std_fname char(100) not null,
+      	std_cnic char(15),
+        std_city_name char(30) not null,
+		passed_exam_id int,
+        primary key (std_id),
+		foreign key (passed_exam_id) references course(course_id)
+);
+
+
+
+
+create table registration(
+		reg_id int not null auto_increment,
+        course_id int not null,
+        std_id int not null,
+        inst_name char(30),
+        primary key(reg_id),
+        foreign key (course_id) references course(course_id),
+        foreign key (std_id) references student(std_id),
+        foreign key (inst_name) references institution(i_name)
+);
+
+
+
+insert into board (b_name) values
+('Gujranwala'),
+('Lahore'),
+('Faisalabad');
+
+insert into city(c_name, c_postal_code,board_name) values
+('Gujranwala','50250','Gujranwala'),
+('Muridke','39000','Gujranwala'),
+('Wazirabad','52000','Gujranwala'),
+('Sheikhupura','39350','Lahore'),
+('Kasur','55050','Lahore'),
+('Nankana','39100','Lahore'); 
+
+insert into subject_(subject_name) values 
+('Computer Science'),
+('Biology'),
+('Islamiat'),
+('Mathematics'),
+('English'),
+('Physics'),
+('Chemistry'),
+('Pak Studies'),
+('Islamiat Ikhtiyari'),
+('Punjabi'),
+('Psychology');
+
+insert into course(course_name,major1,major2,major3,major4,major5) values 
+('MAT-I','Computer Science',default,default,default,default),
+('MAT-II','Computer Science',default,default,default,default),
+('MAT-I','Biology',default,default,default,default),
+('MAT-II','Biology',default,default,default,default),
+('ICS-I','Computer Science','Physics','Mathematics',default,default),
+('ICS-II','Computer Science','Physics','Mathematics',default,default),
+('FCS-I','Biology','Chemistry','Physics',default,default),
+('FCS-II','Biology','Chemistry','Physics',default,default),
+('FCS-I','Chemistry','Physics','Mathematics',default,default),
+('FCS-II','Chemistry','Physics','Mathematics',default,default);
+
+insert into institution (i_name,i_type,no_std,no_tch,ph_num,i_address) values
+('Science Base','School','1500','150','123-123456','Satelite Town, Gujranwala'),
+('Punjab','College','2500','175','123-123456','Kangani Bypass, Gujranwala'),
+('QDPS','School','1500','250','123-123456','Model Town, GT road Gujranwala'),
+('Spirit','School','500','75','123-123456','Peer House, GT road Gujranwala');
+
+insert into student(std_name,std_gender,std_dob,std_addr,std_fname,std_cnic,std_city_name,passed_exam_id) values
+('Rasikh ur Rehman Natiq','M','20020907','street # 1, tariqabad','Rooh ul Amin','12345-6789012-1','Gujranwala','6'),
+('Abdul Moiz','M','20020105','street # 1, tariqabad','abc','12345-6789012-1','Wazirabad','5'),
+('Abdul Basit','M','20020306','street # 1, tariqabad','abc','12345-6789012-1','Kasur','7'),
+('Khurram Iqbal','M','20020303','street # 1, tariqabad','abc','12345-6789012-1','Muridke','10'),
+('Touseef Ahmad','M','20020505','street # 1, tariqabad','abc','12345-6789012-1','Shekhupura','9'),
+('Muhammad Abdullah','M','20020409','street # 1, tariqabad','abc','12345-6789012-1','Gujranwala','5'),
+('Abdullah Amjad','M','20020512','street # 1, tariqabad','abc','12345-6789012-1','Nankana','9'),
+('Uzair Gul','M','20021102','street # 1, tariqabad','abc','12345-6789012-1','Kasur','10'),
+('Abdullah Amjad','M','20021003','street # 1, tariqabad','abc','12345-6789012-1','Wazirabad','8');
+
+insert into registration(course_id,std_id,inst_name) values
+('6','2','QDPS'),
+('8','3','Science Base'),
+('9','5','Punjab'),
+('6','6','QDPS'),
+('10','7','Science Base'),
+('9','9','Punjab');
